@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_base"
+    app:startDestination="@id/meFragment">
+
+    <fragment
+        android:id="@+id/chatsFragment"
+        android:name="com.example.hichatclient.baseActivity.ChatsFragment"
+        android:label="聊天列表"
+        tools:layout="@layout/chats_fragment" />
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:name="com.example.hichatclient.baseActivity.ContactsFragment"
+        android:label="通讯录"
+        tools:layout="@layout/contacts_fragment" >
+        <action
+            android:id="@+id/action_contactsFragment_to_addFriendFragment"
+            app:destination="@id/addFriendFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/meFragment"
+        android:name="com.example.hichatclient.baseActivity.MeFragment"
+        android:label="我"
+        tools:layout="@layout/fragment_me" >
+        <action
+            android:id="@+id/action_meFragment_to_changNameFragment"
+            app:destination="@id/changeNameFragment" />
+        <action
+            android:id="@+id/action_meFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+        <action
+            android:id="@+id/action_meFragment_to_changeProfileFragment"
+            app:destination="@id/changeProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addFriendFragment"
+        android:name="com.example.hichatclient.baseActivity.AddFriendFragment"
+        android:label="添加好友"
+        tools:layout="@layout/fragment_add_friend">
+        <action
+            android:id="@+id/action_addFriendFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changeNameFragment"
+        android:name="com.example.hichatclient.baseActivity.ChangeNameFragment"
+        android:label="修改昵称"
+        tools:layout="@layout/fragment_change_name" >
+        <action
+            android:id="@+id/action_changeNameFragment_to_meFragment"
+            app:destination="@id/meFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.example.hichatclient.baseActivity.ChangePasswordFragment"
+        android:label="修改密码"
+        tools:layout="@layout/change_password_fragment" >
+        <action
+            android:id="@+id/action_changePasswordFragment_to_meFragment"
+            app:destination="@id/meFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changeProfileFragment"
+        android:name="com.example.hichatclient.baseActivity.ChangeProfileFragment"
+        android:label="修改头像"
+        tools:layout="@layout/fragment_change_profile">
+        <action
+            android:id="@+id/action_changeProfileFragment_to_meFragment"
+            app:destination="@id/meFragment" />
+    </fragment>
+</navigation>

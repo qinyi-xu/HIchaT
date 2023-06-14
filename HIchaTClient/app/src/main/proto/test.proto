@@ -1,0 +1,188 @@
+syntax="proto3";
+
+message People{
+    uint32 id=1;
+    string name=2;
+    bytes headpic=3;
+}
+
+message AddFriend{
+
+
+//A：发起者。B：目标
+    message AToServer{
+        string A_short_token=1;
+        uint32 B_id=2;
+        uint64 A_time=3;
+    }
+
+    message ServerRelayToB{
+        People A_info=1;
+        uint64 A_time=2;
+    }
+
+    message BToServer{
+        uint32 A_id=1;
+        bool refuse=2;
+        string B_short_token=3;
+    }
+
+    message ServerRspToA{
+        uint32 B_id=1;
+        bool refuse=2;
+    }
+
+}
+
+message Register{
+
+    message Req{
+        string name=1;
+        string password=2;
+        bytes headpic=3;
+    }
+
+    message Res{
+        uint32 id=1;
+    }
+
+    // oneof test_oneof{
+    //     Register_req register_req=1;
+    //     Register_req register_res=2;
+    // }
+    
+}
+
+// message Delete_account{
+
+
+// }
+
+message Login{
+
+    message Req{
+        uint32 id=1;
+        string password=2;
+        uint32 in_ip=3;
+        uint32 in_port=4;
+    }
+
+    message Res{
+        string name=1;
+        bytes headpic=2;
+        repeated People friend=3;
+        repeated People users_wait_for_add=4;
+        message RequestFromSelf{
+            People obj_user = 1;
+            bool refuse = 2;
+        }
+        repeated RequestFromSelf add_friend_req=5;
+        string short_token=6;
+        string long_token=7;
+        uint64 start_time=8;
+    }
+
+}
+
+message HeartBeat{
+    message Req{
+
+        string short_token=1;
+        uint32 in_ip=2;
+        uint32 in_port=3;
+    
+    }
+    
+    message Res{
+    
+        bool alive=1;
+    }
+
+}
+message GetToken{
+    message Req{
+        string long_token=1;
+    }
+    
+    message Res{
+        string short_token=1;
+        uint64 start_time=2;
+    } 
+}
+
+message SearchUser{
+    message Req{
+        uint32 obj_id=1;
+        string short_token=2;
+    }
+    
+    message Res{
+        People user=1;
+    }
+}
+
+message ChatWithServer{
+    message Req{
+        string short_token=1;
+        uint32 obj_id=2;
+        uint64 time=3;
+        string content=4;//utf-8
+    }
+    
+    message Relay{
+        uint32 src_id=1;
+        string content=2;
+        uint64 time=3;
+    }
+}
+
+message Error{
+
+    enum Error_type{
+        UNKNOWN_ERR=0;
+        UNKNOWN_MSG=1;
+        UNKNOWN_REG_ERR=3;
+        UNKNOWN_LOGIN_ERR=4;
+        UNKNOWN_SEARCH_ERR=5;
+        UNKNOWN_HEARTBEAT_ERR=6;
+        UNKNOWN_GETTOKEN_ERR=7;
+        UNKNOWN_ADD_ERR=8;
+        UNKNOWN_CHAT_ERR=9;
+        UNRECOGNIZE_TOKEN=10;
+        USER_NO_EXIST=11;
+        ID_OR_PSW_WRONG=12;
+    }
+    Error_type error_type=1;
+
+}
+
+message ReqToServer{
+    oneof Req{
+        AddFriend.AToServer add_friend_a_to_server=1;
+        AddFriend.BToServer add_friend_b_to_server=2;
+        ChatWithServer.Req chat_with_server_req=3;
+        GetToken.Req get_token_req=4;
+        HeartBeat.Req heart_beat_req=5;
+        Login.Req login_req=6;
+        Register.Req register_req=7;
+        SearchUser.Req search_user_req=8;
+    }
+}
+
+message RspToClient{
+    oneof Rsp{
+        AddFriend.ServerRelayToB add_friend_server_relay_to_b=1;
+        AddFriend.ServerRspToA add_friend_server_rsp_to_a=2;
+        ChatWithServer.Relay chat_with_server_relay=3;
+        GetToken.Res get_token_res=4;
+        HeartBeat.Res heart_beat_res=5;
+        Login.Res login_res=6;
+        Register.Res register_res=7;
+        SearchUser.Res search_user_res=8;
+        Error error=9;
+    }
+}
+
+
+
+
